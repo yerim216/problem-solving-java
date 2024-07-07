@@ -59,13 +59,8 @@ public class Main{
                 }
             }
             System.out.println(cnt);
+        
         }
-
-
-
-
-
-
 
     }
     public static void main(String[] args) throws Exception{
