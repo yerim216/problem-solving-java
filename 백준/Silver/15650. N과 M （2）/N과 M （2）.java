@@ -11,7 +11,7 @@ public class Main{
     public static boolean[] isused = new boolean[10];
     public static StringBuilder sb;
 
-    public static void func(int k){ //k번째 행에 말을 배치할 예정
+    public static void func(int k){
         if(k==m) {
             for (int i = 0; i < m; i++) {
                 sb.append(arr[i]);
