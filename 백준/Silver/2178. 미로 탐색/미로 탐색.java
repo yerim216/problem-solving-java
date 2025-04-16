@@ -1,61 +1,74 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+
+import java.util.*;
+import java.io.*;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
-        StringTokenizer st = new StringTokenizer(br.readLine());
+	//1초 -> 1억번의 연산 
+	public static void main(String[] args) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
+		
+		Queue<int[]> q = new LinkedList<>();
+		int[] dx = {-1, 0, 1, 0};
+		int[] dy = {0, 1, 0, -1};
+		
+		int[][] board = new int[n][m];
+		int[][] dis = new int[n][m];
+		
+		for(int i=0; i<n; i++) {
+			String s = br.readLine();
+			for(int j=0; j<m; j++) {
+				board[i][j] = s.charAt(j)-'0';
+				dis[i][j] = -1;
+			}
+		}
+		
+		dis[0][0] = 1;
+		q.add(new int[]{0, 0}); //y좌표,x좌
+		
+		int answer = 0;
+		boolean status = false;
+		while(!q.isEmpty()) {
+			int[] temp = q.poll();
+			int y = temp[0];
+			int x = temp[1];
+			
+			for(int i=0; i<4; i++) {
+				int nx = x + dx[i];
+				int ny = y + dy[i];
+				
+				if(nx<0 || nx>=m || ny<0 || ny>=n) continue;
+				if(dis[ny][nx]!=-1  || board[ny][nx]==0) continue;
+				if(nx==m-1 && ny==n-1) {
+					answer = dis[y][x] + 1;
+					status = true;
+					continue;
+				}
+				dis[ny][nx] = dis[y][x] + 1;
+				q.add(new int[] {ny, nx});
+				
+			}
+			if(status) {
+				break;
+			}
+		}
+		if(status) {
+			System.out.println(answer);
+		} else {
+			System.out.println(dis[n-1][m-1]);
+		}
+		
+		
+		
+		
+		
 
-        int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
+	}
 
-        int[][] board = new int[n][m];
-        int[][] dist = new int[n][m];
-        Queue<int[]> queue = new LinkedList<>();
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, 1, -1};
-
-
-        for(int i=0; i<n; i++) {
-            String s = br.readLine();
-            for (int j = 0; j < m; j++) {
-                board[i][j] = s.charAt(j)-'0';
-                dist[i][j] = -1;
-            }
-        }
-
-        for(int i=0; i<n; i++){
-            for(int j=0; j<m; j++){
-                if(board[i][j]==0 || dist[i][j]!=-1) continue;
-                queue.add(new int[]{i, j});
-                dist[i][j] = 1;
-                while(!queue.isEmpty()){
-                    int[] temp = queue.poll();
-                    int x = temp[0];
-                    int y = temp[1];
-                    for(int dir=0; dir<4; dir++){
-                        int nx = x + dx[dir];
-                        int ny = y + dy[dir];
-                        if(nx<0 || nx>=n || ny<0 || ny>=m) continue;
-                        if(dist[nx][ny]==-1 && board[nx][ny]==1){
-                            queue.add(new int[]{nx, ny});
-                            dist[nx][ny] = dist[x][y]+1;
-                        }
-                    }
-                }
-            }
-        }
-
-        System.out.println(dist[n-1][m-1]);
-
-
-
-
-    }
 }
