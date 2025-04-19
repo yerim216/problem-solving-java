@@ -1,35 +1,33 @@
 import java.util.*;
-import java.io.*;
 class Solution {
+    //100,000,000,00
+    //n^2 절대 X. O(n)에 끝내야 함. 
     public String solution(String[] participant, String[] completion) {
-        
-        HashMap<String, Integer> hashMap = new HashMap<>();
-        for(int i=0; i<completion.length; i++){
-            if(hashMap.containsKey(completion[i])){
-                int cnt = hashMap.get(completion[i]);
-                hashMap.replace(completion[i], cnt+1);
-            } else {
-                hashMap.put(completion[i], 1);
+        Map<String, Integer> map = new HashMap<>();
+        for(String s : participant){
+            if(map.containsKey(s)){
+                int curValue = map.get(s);
+                map.put(s, ++curValue);
+            } else{
+                map.put(s, 1);
             }
-            
         }
-        
         String answer = "";
-        for(int j=0; j<participant.length; j++){
-            if(!hashMap.containsKey(participant[j])){
-                answer = participant[j];
-                break;
-            } else {
-                int cnt = hashMap.get(participant[j]);
-                if(cnt<=0){
-                    answer = participant[j];
-                    break;
+        
+        for(String s : completion){
+            if(map.containsKey(s)){
+                int curValue = map.get(s);
+                if(curValue==1){
+                    map.remove(s);
                 } else{
-                    hashMap.replace(participant[j], cnt-1);
+                    map.put(s, --curValue);
                 }
             }
         }
-        
+        for(String s : map.keySet()){
+            answer = s;
+        }
         return answer;
+        
     }
 }
